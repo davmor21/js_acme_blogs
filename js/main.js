@@ -117,6 +117,19 @@ const createComments = (comments) => {
     return fragment
 }
 
+//* #9
+const populateSelectMenu = (users) => {
+    if(!users){
+        return undefined;
+    }
+    const menu = document.getElementById("selectMenu")
+    const options = createSelectOptions(users);
+    for(const option of options){
+        menu.append(option);
+    }
+    return menu
+}
+
 //* #17
 const toggleComments = (event, postID) =>{
 
