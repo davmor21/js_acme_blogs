@@ -78,7 +78,7 @@ const addButtonListeners = () => {
                 buttons[i].addEventListener(
                     "click", 
                     function (event){
-                    toggleComments(event, postID);
+                        toggleComments(event, postID);
                     }, 
                     true)
             }
@@ -94,9 +94,12 @@ const removeButtonListeners = () => {
         for(let i = 0; i < buttons.length; i++){
             const postID = buttons[i].dataset.postId
             if(postID){
-                buttons[i].removeEventListener("click", function (){
-                    toggleComments("click", postID);
-                })
+                buttons[i].removeEventListener(
+                    "click", 
+                    function (event){
+                    toggleComments(event, postID);
+                    }, 
+                    true)
             }
         }
     }
@@ -253,4 +256,15 @@ const toggleComments = (event, postID) =>{
         console.error("Invalid button returned by toggleCommentButton");
     }
     return [section, button];
+}
+//* #18
+const refreshPosts = async (posts) => {
+    if(!posts){
+        return undefined;
+    }
+    const remButtons = removeButtonListeners();
+    const main = deleteChildElements(document.querySelector("main"));
+    const fragment = await displayPosts(posts);
+    const addButtons = addButtonListeners();
+    return [remButtons, main, fragment, addButtons];
 }
