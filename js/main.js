@@ -130,6 +130,31 @@ const populateSelectMenu = (users) => {
     return menu
 }
 
+//* #10
+const getUsers = async () => {
+    try{
+        const userData = await fetch("https://jsonplaceholder.typicode.com/users")
+        if(!userData.ok) throw new Error("Status code not in 200-299 range");
+        return await userData.json();
+    } catch(error){
+        console.error(error);
+    }
+}
+
+//* #11
+const getUserPosts = async (userID) => {
+    if(!userID){
+        return undefined;
+    }
+    try {
+        const userPosts = await fetch(`https://jsonplaceholder.typicode.com/users/${userID}/posts`)
+        if(!userPosts.ok) throw new Error("Status code not in 200-299 range");
+        return await userPosts.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 //* #17
 const toggleComments = (event, postID) =>{
 
