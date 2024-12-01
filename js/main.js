@@ -68,3 +68,25 @@ const deleteChildElements = (parentElement) => {
     
     return parentElement;
 }
+//* #6
+const addButtonListeners = () => {
+    const buttons = document.querySelectorAll("main button");
+    if(buttons){
+        for(let i = 0; i < buttons.length; i++){
+            const postID = buttons[i].dataset.postID
+            if(postID){
+                buttons[i].addEventListener("click", function (){
+                    toggleComments("click", postID);
+                })
+            }
+        }
+    }
+    return buttons;
+}
+
+//* #7
+
+//* #17
+const toggleComments = (event, postID) =>{
+
+}
