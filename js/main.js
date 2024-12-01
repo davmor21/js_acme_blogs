@@ -154,6 +154,33 @@ const getUserPosts = async (userID) => {
         console.error(error);
     }
 }
+//* #12
+const getUser = async (userID) => {
+    if(!userID){
+        return undefined;
+    }
+    try {
+        const user = await fetch(`https://jsonplaceholder.typicode.com/users/${userID}`)
+        if(!user.ok) throw new Error("Status code not in 200-299 range");
+        return await user.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+//* #13
+const getPostComments = async (postID) => {
+    if(!postID){
+        return undefined;
+    }
+    try {
+        const postComments = await fetch(`https://jsonplaceholder.typicode.com/posts/${postID}/comments`)
+        if(!postComments.ok) throw new Error("Status code not in 200-299 range");
+        return await postComments.json();
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 
 //* #17
 const toggleComments = (event, postID) =>{
