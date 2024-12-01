@@ -221,6 +221,19 @@ const createPosts = async (posts) => {
     return fragment;
 }
 
+//* #16
+const displayPosts = async (posts) => {
+    const main = document.querySelector("main");
+    const element = posts ? await createPosts(posts)
+                          : createElemWithText('p', "Select an Employee to display their posts.");
+    if(!posts){
+        element.classList.add("default-text");
+    }
+    
+    main.append(element)
+    return element;
+}
+
 
 //* #17
 const toggleComments = (event, postID) =>{
