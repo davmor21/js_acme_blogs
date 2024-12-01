@@ -85,6 +85,37 @@ const addButtonListeners = () => {
 }
 
 //* #7
+const removeButtonListeners = () => {
+    const buttons = document.querySelectorAll("main button");
+    if(buttons){
+        for(let i = 0; i < buttons.length; i++){
+            const postID = buttons[i].dataset.postID
+            if(postID){
+                buttons[i].removeEventListenerEventListener("click", function (){
+                    toggleComments("click", postID);
+                })
+            }
+        }
+    }
+    return buttons;
+}
+
+//* #8
+const createComments = (comments) => {
+    if(!comments){
+        return undefined;
+    }
+    const fragment = document.createDocumentFragment();
+    for(const comment of comments){
+        const article = document.createElement("article");
+        const h3 = createElemWithText('h3', comment.name);
+        const p = createElemWithText('p', comment.body);
+        const p2 = createElemWithText('p', `From: ${comment.email}`);
+        article.append(h3,p,p2); 
+        fragment.append(article)
+    }
+    return fragment
+}
 
 //* #17
 const toggleComments = (event, postID) =>{
