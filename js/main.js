@@ -181,6 +181,20 @@ const getPostComments = async (postID) => {
     }
 }
 
+//* #14
+const displayComments = async (postID) => {
+    if(!postID){
+        return undefined;
+    }
+    const section = document.createElement("section");
+    section.dataset.postId = postID;
+    section.classList.add("comments", "hide");
+    const comments = await getPostComments(postID);
+    const fragment = createComments(comments);
+    section.append(fragment);
+    return section;
+}
+
 
 //* #17
 const toggleComments = (event, postID) =>{
