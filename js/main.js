@@ -29,7 +29,7 @@ const toggleCommentSection = (postID) => {
     if(!postID){
         return undefined;
     }
-    const section = document.querySelector(`[data-post-id="${postID}"]`);
+    const section = document.querySelector(`section[data-post-id="${postID}"]`);
     if(section){
        section.classList.toggle("hide")
     }
@@ -40,7 +40,7 @@ const toggleCommentButton = (postID) => {
     if(!postID){
         return undefined;
     }
-    const button = document.querySelector(`[data-post-id="${postID}"]`);
+    const button = document.querySelector(`button[data-post-id="${postID}"]`);
     if (button){
         if(button.textContent == "Show Comments"){
             button.textContent = "Hide Comments"
@@ -73,11 +73,14 @@ const addButtonListeners = () => {
     const buttons = document.querySelectorAll("main button");
     if(buttons){
         for(let i = 0; i < buttons.length; i++){
-            const postID = buttons[i].dataset.postID
+            const postID = buttons[i].dataset.postId
             if(postID){
-                buttons[i].addEventListener("click", function (){
-                    toggleComments("click", postID);
-                })
+                buttons[i].addEventListener(
+                    "click", 
+                    function (event){
+                    toggleComments(event, postID);
+                    }, 
+                    true)
             }
         }
     }
@@ -89,9 +92,9 @@ const removeButtonListeners = () => {
     const buttons = document.querySelectorAll("main button");
     if(buttons){
         for(let i = 0; i < buttons.length; i++){
-            const postID = buttons[i].dataset.postID
+            const postID = buttons[i].dataset.postId
             if(postID){
-                buttons[i].removeEventListenerEventListener("click", function (){
+                buttons[i].removeEventListener("click", function (){
                     toggleComments("click", postID);
                 })
             }
@@ -237,5 +240,17 @@ const displayPosts = async (posts) => {
 
 //* #17
 const toggleComments = (event, postID) =>{
-
+    if(!postID || !event){
+        return undefined;
+    }
+    event.target.listener = true;
+    const section = toggleCommentSection(postID);
+    const button = toggleCommentButton(postID);
+    if (!(section instanceof HTMLElement && section.tagName === "SECTION")) {
+        console.error("Invalid section returned by toggleCommentSection");
+    }
+    if (!(button instanceof HTMLElement && button.tagName === "BUTTON")) {
+        console.error("Invalid button returned by toggleCommentButton");
+    }
+    return [section, button];
 }
