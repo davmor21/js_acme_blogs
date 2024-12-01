@@ -36,3 +36,35 @@ const toggleCommentSection = (postID) => {
     return section;
 }
 //* #4
+const toggleCommentButton = (postID) => {
+    if(!postID){
+        return undefined;
+    }
+    const button = document.querySelector(`[data-post-id="${postID}"]`);
+    if (button){
+        if(button.textContent == "Show Comments"){
+            button.textContent = "Hide Comments"
+        }
+        else if(button.textContent == "Hide Comments"){
+            button.textContent = "Show Comments"
+        } 
+        
+    }
+    return button
+   
+}
+//* #5
+const deleteChildElements = (parentElement) => {
+    if(!parentElement || !(parentElement instanceof HTMLElement)){
+        return undefined;
+    }
+    let child = parentElement.lastElementChild
+    if(child){
+        while(child){
+            parentElement.removeChild(child)
+            child = parentElement.lastElementChild
+        }
+    }
+    
+    return parentElement;
+}
