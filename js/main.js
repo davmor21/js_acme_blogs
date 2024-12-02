@@ -249,9 +249,9 @@ const toggleComments = (event, postID) =>{
     event.target.listener = true;
     const section = toggleCommentSection(postID);
     const button = toggleCommentButton(postID);
-    if (!(section instanceof HTMLElement && section.tagName === "SECTION")) {
+    if (!(section instanceof HTMLElement && section.tagName == "SECTION")) {
         console.error("Invalid section returned by toggleCommentSection");
-    }
+    } 
     if (!(button instanceof HTMLElement && button.tagName === "BUTTON")) {
         console.error("Invalid button returned by toggleCommentButton");
     }
@@ -268,3 +268,43 @@ const refreshPosts = async (posts) => {
     const addButtons = addButtonListeners();
     return [remButtons, main, fragment, addButtons];
 }
+
+//* #19
+const selectMenuChangeEventHandler = async (e) => {
+    if(!e){
+        return undefined;
+    }
+    try {
+        let userId = e.target.value || 1;
+        let posts = await getUserPosts(userId);
+        let refreshPostsArray = await refreshPosts(posts);
+        return [userId, posts, refreshPostsArray];
+    } catch (error) {
+        console.error("An error occurred in selectMenuChangeEventHandler: ", error);
+        return null;
+    }
+};
+
+//* #20
+const initPage = async () => {
+    const users = await getUsers();
+    const select = populateSelectMenu(users);
+    return [users, select];
+}
+
+//* 21 
+const initApp = () => {
+    initPage();
+    const selectMenu = document.getElementById("selectMenu");
+    selectMenu.addEventListener(change, selectMenuChangeEventHandler)
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectMenu = document.getElementById("selectMenu");
+    
+    if (selectMenu) {
+        selectMenu.addEventListener('change', selectMenuChangeEventHandler);
+    } else {
+        console.warn("selectMenu element not found when attaching event listener");
+    }
+});
