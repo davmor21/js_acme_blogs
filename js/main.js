@@ -270,12 +270,13 @@ const refreshPosts = async (posts) => {
 }
 
 //* #19
-const selectMenuChangeEventHandler = async (e) => {
-    if(!e){
+const selectMenuChangeEventHandler = async (event) => {
+    if(!event){
         return undefined;
     }
     try {
-        let userId = e.target.value || 1;
+        let userId = event?.target?.value || 1;
+        console.log(userId)
         let posts = await getUserPosts(userId);
         let refreshPostsArray = await refreshPosts(posts);
         return [userId, posts, refreshPostsArray];
