@@ -79,8 +79,7 @@ const addButtonListeners = () => {
                     "click", 
                     function (event){
                         toggleComments(event, postID);
-                    }, 
-                    true)
+                    })
             }
         }
     }
@@ -98,8 +97,7 @@ const removeButtonListeners = () => {
                     "click", 
                     function (event){
                     toggleComments(event, postID);
-                    }, 
-                    true)
+                    })
             }
         }
     }
@@ -249,12 +247,6 @@ const toggleComments = (event, postID) =>{
     event.target.listener = true;
     const section = toggleCommentSection(postID);
     const button = toggleCommentButton(postID);
-    if (!(section instanceof HTMLElement && section.tagName == "SECTION")) {
-        console.error("Invalid section returned by toggleCommentSection");
-    } 
-    if (!(button instanceof HTMLElement && button.tagName === "BUTTON")) {
-        console.error("Invalid button returned by toggleCommentButton");
-    }
     return [section, button];
 }
 //* #18
@@ -271,19 +263,29 @@ const refreshPosts = async (posts) => {
 
 //* #19
 const selectMenuChangeEventHandler = async (event) => {
-    if(!event){
+    console.log(event?.type)
+    if(!event || event?.type != "change"){
         return undefined;
     }
-    try {
-        let userId = event?.target?.value || 1;
-        console.log(userId)
-        let posts = await getUserPosts(userId);
-        let refreshPostsArray = await refreshPosts(posts);
-        return [userId, posts, refreshPostsArray];
-    } catch (error) {
-        console.error("An error occurred in selectMenuChangeEventHandler: ", error);
-        return null;
+    console.log(`Event value: ${event?.target?.value}`)
+    let userId = parseInt(event?.target?.value, 10);
+    if (isNaN(userId)) {
+        console.log(`Invalid userId: ${event?.target?.value}. Defaulting to userId: 1`);
+        userId = 1;
     }
+    console.log(`After loop: ${userId}`);
+    if(event.target && event.target != undefined){
+        let menu = event.target
+        menu.disabled = true;
+    }
+    console.log(`Fetching posts for userId: ${userId}`);
+    let posts = await getUserPosts(userId);
+    let refreshPostsArray = await refreshPosts(posts);
+    if(event.target && event.target != undefined){
+        let menu = event.target
+        menu.disabled = false;
+    }
+    return [userId, posts, refreshPostsArray];
 };
 
 //* #20
@@ -297,15 +299,7 @@ const initPage = async () => {
 const initApp = () => {
     initPage();
     const selectMenu = document.getElementById("selectMenu");
-    selectMenu.addEventListener(change, selectMenuChangeEventHandler)
+    selectMenu.addEventListener('change', selectMenuChangeEventHandler)
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const selectMenu = document.getElementById("selectMenu");
-    
-    if (selectMenu) {
-        selectMenu.addEventListener('change', selectMenuChangeEventHandler);
-    } else {
-        console.warn("selectMenu element not found when attaching event listener");
-    }
-});
+document.addEventListener('DOMContentLoaded', initApp());
